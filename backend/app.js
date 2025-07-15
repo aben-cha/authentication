@@ -1,6 +1,6 @@
 import Fastify from "fastify";
 import dotenv from "dotenv";
-import routes from "./routes/firstRoute.js";
+import routes from "./routes/auth.routes.js";
 dotenv.config();
 
 const fastify = Fastify({
@@ -8,7 +8,7 @@ const fastify = Fastify({
 });
 
 
-fastify.register(routes);
+fastify.register(routes, {prefix: '/api/v1'});
 
 const start = async () => {
     try {
