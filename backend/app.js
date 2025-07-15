@@ -8,7 +8,7 @@ const fastify = Fastify({
 });
 
 
-fastify.register(routes, {prefix: '/api/v1'});
+fastify.register(routes, {prefix: '/backend'});
 
 const start = async () => {
     try {

@@ -12,6 +12,14 @@
         * controllers
         * models
         * routes
+        * db
         app.js
         .env
         .gitignore
+
+
+
+-----> How to configure dotenv:
+Location of .env	
+* At project root	          ---->     dotenv.config();
+* Inside backend/ folder	  ---->     dotenv.config({ path: './backend/.env' });
