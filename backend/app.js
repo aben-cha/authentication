@@ -1,12 +1,14 @@
 import Fastify from "fastify";
 import dotenv from "dotenv";
-
+import routes from "./routes/firstRoute.js";
 dotenv.config();
 
 const fastify = Fastify({
     logger: true
 });
 
+
+fastify.register(routes);
 
 const start = async () => {
     try {
@@ -20,10 +22,6 @@ const start = async () => {
         process.exit(1);
     }
 }
-
-fastify.get('/', (req, res) => {
-    return res.status(200).send({message: 'Hello from Fastify!'})
-});
 
 start();
 
