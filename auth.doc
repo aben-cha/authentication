@@ -1,0 +1,17 @@
+* npm init -y  --> create node modules
+* npm install express cookie-parser mailtrap bcryptjs dotenv jsonwebtoken crypto // for express
+* npm install nodemon -D
+* npm install dotenv
+* npm install fastify @fastify/jwt @fastify/cookie  bcryptjs @fastify/cors(optional)
+    jwt: for JSON web tokens(for cross origin resource sharing)
+
+
+
+----> structrue :
+    src:
+        * controllers
+        * models
+        * routes
+        app.js
+        .env
+        .gitignore

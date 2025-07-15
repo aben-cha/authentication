@@ -1,0 +1,21 @@
+{
+  "name": "authentication",
+  "version": "1.0.0",
+  "description": "User Authentication System",
+  "main": "backend/app.js",
+  "type": "module",
+  "scripts": {
+    "start": "node backend/app.js",
+    "dev": "nodemon backend/app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^17.2.0",
+    "fastify": "^5.4.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}

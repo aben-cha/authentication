@@ -1,0 +1,147 @@
+🎯 Best Practice: Backend-first or Frontend-first?
+ ✅ 1. Backend-first (Recommended) :
+ * You define clear data models, APIs, and database structure first
+ * Your frontend team or yourself will have stable endpoints to integrate with.
+ * Reduces risk of rework when you finalize API design later.
+ * Ensures all business logic, authentication, and validations are solid before UI polish
+
+💡 Typical backend-first flow:
+1* Design the database schema (you already did ✔️).
+2* Set up your backend framework (e.g. Fastify, Express, NestJS).
+3* Implement user authentication & session management.
+4* Build REST or GraphQL APIs for:
+    * Sign up, login, profile
+    * Friends management
+    * Match requests
+    * Games and tournaments
+    * Notifications and messages
+5* Test APIs with Postman or unit/integration tests.
+6* Once API is stable ➔ start frontend integration.
+
+
+======================> Set up Typescript 
+* npm init -y
+* npm install Fastify
+* npm install typescript ts-node-dev @types/node --save-dev
+* npm install @fastify/jwt @fastify/cors
+---> 🔧 2. Initialize TypeScript config
+    * npx tsc --init
+    * Update tsconfig.json with:
+        {
+            "compilerOptions": {
+                "target": "ES2020",             // Good: modern JS features
+                "module": "CommonJS",           // Needed for Node.js (require/module.exports)
+                "moduleResolution": "node",     // Correct for Node.js imports
+                "outDir": "./dist",             // Compiled JS output folder
+                "rootDir": "./src",             // Source code folder
+                "strict": true,                 // Enforces type safety (recommended)
+                "esModuleInterop": true         // Allows default import compatibility
+                "forceConsistentCasingInFileNames": true,
+                "skipLibCheck": true,
+                "resolveJsonModule": true
+                "esModuleInterop": true
+            }
+        }
+---> 🔧 🔥 3. Update package.json scripts
+    "scripts": {
+1-    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+2-    "build": "tsc",
+3-    "start": "node dist/index.js"
+    }
+1-> ts-node-dev: Runs TypeScript files directly with hot reload (like nodemon but for TS).
+2- tsc: Runs the TypeScript compiler (tsc) to transpile all .ts files in src/ into .js 
+        files in your dist/ folder (as defined in tsconfig.json)
+3- After building your project (npm run build), run it in production using Node.js 
+        (without TypeScript dependencies).
+
+💡 Summary Table
+Script	        Purpose	                                               When to use
+dev	            Runs app with hot reload in TypeScript directly	       During development
+build	        Compiles TypeScript to JavaScript in dist/	           Before deploying to production
+start	        Runs the compiled JavaScript app	                   In production environment
+
+✅ Best practice:
+  Use:
+    npm run dev     ➔ while developing
+    npm run build   ➔ before deploy
+    npm start       ➔ on your production server
+
+✅ 4. Create basic folder structure
+/src
+  index.ts : Your entry point. It:
+              * Initializes Fastify.
+              * Registers plugins (e.g. JWT, CORS).
+              * Registers routes (like authRoutes).
+              * Starts the server.
+  routes/
+    authRoutes.ts
+    fastify.post('/login', authController.login);
+    fastify.post('/signup', authController.signup);
+  controllers/ ---> defines functions : signup, login. getProfile
+    authController.ts
+  models/  
+    userModel.ts
+    * TypeScript interface for user objects
+    * Functions to create, read, update, delete users in DB (if using raw SQL)
+  utils/
+    db.ts :  Database setup and connection logic
+    types.ts :  Defines global TypeScript types and interfaces (e.g. request body schemas, JWT payloads).
+
+🛠️ 5. In src/index.ts – your Fastify entry
+import Fastify from 'fastify';
+import authRoutes from './routes/authRoutes';
+
+const app = Fastify();
+
+app.register(authRoutes, {prefix: "/api/v1/users"});
+
+app.listen({ port: 3000 }, (err, address) => {
+  if (err) {
+    app.log.error(err);
+    process.exit(1);
+  }
+  console.log(`Server running at ${address}`);
+});
+
+🔑 6. Next Tasks for User Management & Auth
+    Set up SQLite or PostgreSQL connection (utils/db.ts).
+
+    Create User model with TypeScript interfaces.
+
+    Implement authRoutes.ts:
+      * /signup
+      * /login
+      * /profile
+
+    In authController.ts:
+      * Hash passwords (e.g. with bcryptjs)
+      * Verify passwords during login
+      *Generate JWT tokens with @fastify/jwt.
+
+
+* dotenv : npm install dotenv
+  - create a .env        .gitignore : .env
+  - example :   PORT=3000
+                JWT_SECRET=yourSuperSecretKey
+                DATABASE_URL=sqlite:./db.sqlite
+
+
+🎯 SQLite: 
+  npm install better-sqlite3
+  npm install --save-dev @types/better-sqlite3
+
+  https://sqlitebrowser.org/dl/ :  DB Browser for SQLite.
+  chmod +x DB.Browser.for.SQLite-v3.13.1-x86_64-v2.AppImage
+  ./DB.Browser.for.SQLite-v3.13.1-x86_64-v2.AppImage
+
+
+==========> online_status of user :
+🔍 How will it be used?
+
+✅ On user login:
+  Set online_status = TRUE.
+✅ On logout or disconnect:
+  Set online_status = FALSE.
+✅ For displaying online friends:
+  SELECT * FROM User
+  WHERE online_status = TRUE;
