@@ -12,23 +12,27 @@ const signup = async (request, reply) => {
     const {username, email, password} = request.body;
 
     if (!username || !email || !password)
-        return reply.code(400).send({status: false, message: 'All fiels are required.'});
-        // throw new Error('');
-    const usernameAlreadyExist = userModel.getUserByUsername(username);
-    const emailAlreadyExist = userModel.getUserByUsername(email);
-
-    if (usernameAlreadyExist || emailAlreadyExist)
-        return reply.code(400).send({status: false, message: 'User already exists'});
+        throw new Error('All fields are required');
 
     try {
-        const hashedPassowrd = await bcrypt.hash(password, 10);
-        const user = userModel.createUser(username, email, hashedPassowrd);
+        const usernameAlreadyExist = userModel.getUserByUsername(username);
+        const emailAlreadyExist = userModel.getUserByEmail(email);
+    
+        if (usernameAlreadyExist || emailAlreadyExist)
+            throw new Error('User already exists');
 
-        console.log("id of user : --> [", user, "]");
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const userId = userModel.createUser(username, email, hashedPassword);
+        console.log("id of user : --> [", userId, "]");
+        
+        return  reply.code(200)
+                     .send({ status: true, 
+                             message: 'User registered successfully.', 
+                             userId: userId});    
     } catch (error) {
+        console.error("Signup error:", error); // Helpful for debugging
         return reply.code(400).send({status: false, message: error.message});
     }
-    return  reply.code(200).send({status: true, message: 'User registered successfully.'});    
 };
 
 const logout = async (request, reply) => {
