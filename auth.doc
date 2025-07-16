@@ -35,3 +35,34 @@ Any async operation (bcrypt, fetch, external API)	  ✅ Yes, use async and await
 
 
 -------> JWT(Json Web Token)
+* 🔑 JWT = stateless authentication No need to store user sessions on the server; JWT contains all necessary data.
+* Process overview
+ ----(A) Signup
+    User registers ➔ password is hashed ➔ saved in DB ➔ JWT is generated ➔ sent to user.
+ ----(B) Login
+    User submits email/password ➔ server verifies ➔ generates JWT ➔ sends to user.
+ ----(C) Protected route
+    User sends request with JWT ➔ server verifies token ➔ allows access.
+
+* JWT_SECRET=pingpongsupersecretkey  --->   ✔️ Easy for local testing
+                                    ❌ Not secure for production
+* JWT_SECRET=9h9!$zO@7Qf3p#LmV2*Ejr&Bw^Ks6d4NxZ0t+1Yc8gHb5U
+        ----->  ✔️ Hard to guess
+                ✔️ Mix of uppercase, lowercase, numbers, symbols
+* fastify.register(fastifyJwt, {secret: process.env.JWT_SECRET});
+    ---> fastify.register(jwt, {...}) is registering the JWT plugin with Fastify.
+    - You’re telling Fastify:
+    “Hey Fastify, use the fastify-jwt plugin, and here is my secret key for signing and verifying tokens.
+* fastify.register(fastifyCookie);
+    ----> Without registering fastify-cookie, you cannot use reply.setCookie() or read request.cookies
+
+
+
+-------> order is important
+fastify.register(fastifyJwt, { secret: process.env.JWT_SECRET });
+fastify.register(fastifyCookie);
+
+* fastify.register(routes, { prefix: '/backend' });
+* fastifyJwt ➔ Adds fastify.jwt methods to your server instance
+* fastifyCookie ➔ Adds request.cookies and reply.setCookie methods
+* Routes ➔ Use these plugins, so they must be registered after the plugins

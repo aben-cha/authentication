@@ -1,6 +1,5 @@
 import db from '../db/db.js'
 
-
 const getAllUsers =  () => {
     const query = 'SELECT * FROM USERS';
     const users = db.prepare(query)
@@ -8,7 +7,7 @@ const getAllUsers =  () => {
 }
 
 const getUserByID =  (id) => {
-    const query = 'SELECT * FROM USERS WHERE id = ?';
+    const query = 'SELECT id FROM USERS WHERE id = ?';
     const userID = db.prepare(query);
     return userID.get(id);
 }

@@ -1,12 +1,18 @@
 import Fastify from "fastify";
 import dotenv from "dotenv";
 import routes from "./routes/auth.routes.js";
+import fastifyJwt from "@fastify/jwt";
+import fastifyCookie from "@fastify/cookie";
 
 dotenv.config();
 
 const fastify = Fastify({
     logger: true
 });
+
+
+fastify.register(fastifyJwt, {secret: process.env.JWT_SECRET});
+fastify.register(fastifyCookie);
 
 fastify.register(routes, {prefix: '/backend'});
 
