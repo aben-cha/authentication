@@ -1,12 +1,12 @@
 import Fastify from "fastify";
 import dotenv from "dotenv";
 import routes from "./routes/auth.routes.js";
+
 dotenv.config();
 
 const fastify = Fastify({
     logger: true
 });
-
 
 fastify.register(routes, {prefix: '/backend'});
 
