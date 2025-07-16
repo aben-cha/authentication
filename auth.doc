@@ -23,3 +23,10 @@
 Location of .env	
 * At project root	          ---->     dotenv.config();
 * Inside backend/ folder	  ---->     dotenv.config({ path: './backend/.env' });
+
+
+
+------> 🔑 Key point
+Situation	Should you use async/await?  
+Only sync calls (better-sqlite3, basic logic)	        ❌ No need for async.
+Any async operation (bcrypt, fetch, external API)	  ✅ Yes, use async and await
