@@ -11,10 +11,11 @@ const login = async (request, reply) => {
 const signup = async (request, reply) => {
     const {username, email, password} = request.body;
 
-    if (!username || !email || !password)
-        throw new Error('All fields are required');
-
+    
     try {
+        if (!username || !email || !password)
+            throw new Error('All fields are required');
+
         const usernameAlreadyExist = userModel.getUserByUsername(username);
         const emailAlreadyExist = userModel.getUserByEmail(email);
     
@@ -25,13 +26,13 @@ const signup = async (request, reply) => {
         const userId = userModel.createUser(username, email, hashedPassword);
         console.log("id of user : --> [", userId, "]");
         
-        return  reply.code(200)
-                     .send({ status: true, 
-                             message: 'User registered successfully.', 
-                             userId: userId});    
+        reply.code(200) 
+             .send({ status: true, 
+                     message: 'User registered successfully.', 
+                     userId: userId});    
     } catch (error) {
         console.error("Signup error:", error); // Helpful for debugging
-        return reply.code(400).send({status: false, message: error.message});
+        reply.code(400).send({status: false, message: error.message});
     }
 };
 
