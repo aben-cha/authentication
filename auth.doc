@@ -30,3 +30,8 @@ Location of .env
 Situation	Should you use async/await?  
 Only sync calls (better-sqlite3, basic logic)	        ❌ No need for async.
 Any async operation (bcrypt, fetch, external API)	  ✅ Yes, use async and await
+
+
+
+
+-------> JWT(Json Web Token)
