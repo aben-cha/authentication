@@ -1,5 +1,6 @@
 import userModel from "../models/user.model.js"
 import bcrypt from "bcryptjs";
+import fastify from "../app.js";
 
 
 const login = async (request, reply) => {
@@ -8,7 +9,7 @@ const login = async (request, reply) => {
     return  {message: 'login'};    
 };
 
-const signup = async (request, reply, fastify) => {
+const signup = async (request, reply) => {
     const {username, email, password} = request.body;
 
     try {
@@ -24,10 +25,8 @@ const signup = async (request, reply, fastify) => {
         if (emailAlreadyExist)
             throw new Error('Email already exists');
           
-
         const hashedPassword = await bcrypt.hash(password, 10);
         const userId = userModel.createUser(username, email, hashedPassword);
-        
         
         console.log("id of user : --> [", userId, "]");
         
