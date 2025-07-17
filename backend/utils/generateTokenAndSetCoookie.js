@@ -1,6 +1,5 @@
 import fastify from "../app.js"
 
-
 export const generateTokenAndSetCoookie = (reply, id, username, email) => {
     const token = fastify.jwt.sign({
         id: id, 

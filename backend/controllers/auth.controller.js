@@ -78,7 +78,7 @@ const login = async (request, reply) => {
 
 const logout = async (request, reply) => {
     try {
-        reply.clearCookie('token', { path: '/api/auth' });
+        reply.clearCookie('token', { path: '/' });
         reply.send({status: true, message: 'Logged out successfully'})
     } catch (error) {
         console.error("logout error:", error);

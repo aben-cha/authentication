@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import routes from "./routes/auth.routes.js";
 import fastifyJwt from "@fastify/jwt";
 import fastifyCookie from "@fastify/cookie";
+import { authenticate } from "./middlewares/auth.js";
 
 dotenv.config();
 
@@ -11,10 +12,13 @@ const fastify = Fastify({
 });
 
 
-fastify.register(fastifyJwt, {secret: process.env.JWT_SECRET});
+fastify.register(fastifyJwt, {secret: process.env.JWT_SECRET /* || secret_key */});
 fastify.register(fastifyCookie);
 
-fastify.register(routes, {prefix: '/api/auth'});
+// Authentication decorator
+fastify.decorate('authenticate', authenticate);
+
+fastify.register(routes, {prefix: '/'});
 
 const start = async () => {
     try {
