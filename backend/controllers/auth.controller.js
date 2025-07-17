@@ -33,7 +33,7 @@ const signup = async (request, reply) => {
         //     httpOnly: true, // can't be accessed by JavaScript
         //     secure: process.env.NODE_ENV === 'production', //local: http , production: https
         //     sameSite: 'strict', // CSRF protection
-        //     maxAge: 7 * 24 * 60 * 60 // 7 days
+        //     maxAge: 7 * 24 * 60 * 60 * 1000// 7 days
         // });
         generateTokenAndSetCoookie(reply, userId, username, email);
 
@@ -77,7 +77,12 @@ const login = async (request, reply) => {
 };
 
 const logout = async (request, reply) => {
-    return  {message: 'logout'};    
+    try {
+        reply.clearCookie('token', );
+    } catch (error) {
+        console.error("logout error:", error);
+        reply.code(400).send({status:false, message: error.message});
+    }    
 };
 
 export default {login, signup, logout};
