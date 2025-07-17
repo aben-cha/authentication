@@ -66,6 +66,7 @@ const login = async (request, reply) => {
         if(!isPasswordValid)
             throw new Error("Incorrect password.");
         
+        generateTokenAndSetCoookie(reply, user.id, user.username, user.email);
 
         reply.send({status: true, message: 'User Logged in successfully'});
 
