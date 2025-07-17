@@ -12,6 +12,6 @@ export const generateTokenAndSetCoookie = (reply, id, username, email) => {
         httpOnly: true, // can't be accessed by JavaScript
         secure: process.env.NODE_ENV === 'production', //local: http , production: https
         sameSite: 'strict', // CSRF protection
-        maxAge: 7 * 24 * 60 * 60 // 7 days
+        maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
     });
 }
