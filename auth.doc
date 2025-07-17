@@ -66,3 +66,39 @@ fastify.register(fastifyCookie);
 * fastifyJwt ➔ Adds fastify.jwt methods to your server instance
 * fastifyCookie ➔ Adds request.cookies and reply.setCookie methods
 * Routes ➔ Use these plugins, so they must be registered after the plugins
+
+
+
+
+
+
+---------> nodemailer
+✨ 🔑 1. What is email verification?
+    ✅ Generate a unique verification token
+    ✅ Send it to their email as a clickable verification link
+    ✅ When they click it, mark their account as verified in your DB
+
+✅ 2. Install Nodemailer
+    npm install nodemailer
+
+
+🔧 3. Setup Nodemailer transporter :  mailer.js
+import nodemailer from 'nodemailer';
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER, // your email
+    pass: process.env.EMAIL_PASS  // app password or real password if local
+  }
+});
+
+export default transporter;
+
+📝 4. Modify your users table
+ALTER TABLE USERS ADD COLUMN isVerified INTEGER DEFAULT 0;
+ALTER TABLE USERS ADD COLUMN verificationToken TEXT;
+
+🔑 5. Generate a unique verification token
+
+
