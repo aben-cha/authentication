@@ -2,13 +2,6 @@ import userModel from "../models/user.model.js"
 import bcrypt from "bcryptjs";
 import fastify from "../app.js";
 
-
-const login = async (request, reply) => {
-    const users = await userModel.getAllUsers();
-    console.log("------> users: ", users);
-    return  {message: 'login'};    
-};
-
 const signup = async (request, reply) => {
     const {username, email, password} = request.body;
 
@@ -54,6 +47,30 @@ const signup = async (request, reply) => {
     } catch (error) {
         console.error("Signup error:", error); // Helpful for debugging
         reply.code(400).send({status: false, message: error.message});
+    }
+};
+
+const login = async (request, reply) => {
+    const {email, password} = request.body;
+    
+    try {
+        if (!email || !password)
+            throw new Error("Email and password are required fields.");
+
+        const user = userModel.getUserByEmail(email);
+        if (!user)
+            throw new Error("No account found with this email.");
+
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if(!isPasswordValid)
+            throw new Error("Incorrect password.");
+        
+
+        reply.send({status: true, message: 'User Logged in successfully'});
+
+    } catch(error) {
+        console.error("login error:", error);
+        reply.code(400).send({status:false, message: error.message});
     }
 };
 
