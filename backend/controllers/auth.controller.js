@@ -1,6 +1,7 @@
 import userModel from "../models/user.model.js"
 import bcrypt from "bcryptjs";
-import fastify from "../app.js";
+// import fastify from "../app.js";
+import {generateTokenAndSetCoookie} from "../utils/generateTokenAndSetCoookie.js";
 
 const signup = async (request, reply) => {
     const {username, email, password} = request.body;
@@ -21,20 +22,20 @@ const signup = async (request, reply) => {
         const hashedPassword = await bcrypt.hash(password, 10);
         const userId = userModel.createUser(username, email, hashedPassword);
         
-        console.log("id of user : --> [", userId, "]");
+
+        // const token = fastify.jwt.sign({
+        //                 id: userId, 
+        //                 username: username, 
+        //                 email: email
+        //             }, {expiresIn: '7d'});
         
-        const token = fastify.jwt.sign({
-                        id: userId, 
-                        username: username, 
-                        email: email
-                    }, {expiresIn: '7d'});
-        
-        reply.setCookie('token', token, {
-            httpOnly: true, // can't be accessed by JavaScript
-            secure: process.env.NODE_ENV === 'production', //local: http , production: https
-            sameSite: 'strict', // CSRF protection
-            maxAge: 7 * 24 * 60 * 60 // 7 days
-        });
+        // reply.setCookie('token', token, {
+        //     httpOnly: true, // can't be accessed by JavaScript
+        //     secure: process.env.NODE_ENV === 'production', //local: http , production: https
+        //     sameSite: 'strict', // CSRF protection
+        //     maxAge: 7 * 24 * 60 * 60 // 7 days
+        // });
+        generateTokenAndSetCoookie(reply, userId, username, email);
 
         reply.code(201) 
              .send({ status: true, 

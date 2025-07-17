@@ -14,7 +14,7 @@ const fastify = Fastify({
 fastify.register(fastifyJwt, {secret: process.env.JWT_SECRET});
 fastify.register(fastifyCookie);
 
-fastify.register(routes, {prefix: '/backend'});
+fastify.register(routes, {prefix: '/api/auth'});
 
 const start = async () => {
     try {
