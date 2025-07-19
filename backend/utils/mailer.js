@@ -9,20 +9,4 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-/*
-verifyOtp = ''
-verifyOtpExpiredAt
-isAccountVerified = 0
-
-id
-username
-email
-passowrd
-isAccountVerified = 0
-verificationToken = ''
-verificationTokenExpiresAt = date
-createdat
-
-*/
-
 export default transporter;

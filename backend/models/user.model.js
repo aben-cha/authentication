@@ -24,9 +24,19 @@ const getUserByUsername =  (username) => {
     return userUsername.get(username);
 }
 
-const createUser =  (username, email, password) => {
-    const query = 'INSERT INTO USERS (username, email, password) VALUES (?, ?, ?)';
-    const user = db.prepare(query).run(username, email, password);
+// const createUser =  (username, email, password) => {
+//     const query = 'INSERT INTO USERS (username, email, password) VALUES (?, ?, ?)';
+//     const user = db.prepare(query).run(username, email, password);
+//     return user.lastInsertRowid;
+// }
+
+const createUser =  (username, email, password, verificationToken, tokenExpiry) => {
+    const query = `
+      INSERT INTO USERS 
+      (username, email, password, verificationToken, verificationTokenExpiresAt) 
+      VALUES (?, ?, ?, ?, ?)
+    `;
+    const user = db.prepare(query).run(username, email, password, verificationToken, tokenExpiry);
     return user.lastInsertRowid;
 }
 

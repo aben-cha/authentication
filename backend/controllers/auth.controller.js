@@ -23,18 +23,19 @@ const signup = async (request, reply) => {
           
         const hashedPassword = await bcrypt.hash(password, 10);
         const verificationCode = Math.floor(100000 + Math.random()* 900000).toString();
-        const userId = userModel.createUser(username, email, hashedPassword);
+        const tokenExpiry = new Date(Date.now() + 15 * 60 * 1000).toISOString();
+        const userId = userModel.createUser(username, email, hashedPassword, verificationCode, tokenExpiry);
         
         generateTokenAndSetCoookie(reply, userId, username, email);
 
-        const mailOptions = {
-            from: '"PingPong App" <no-reply@pingpong.com>',
-            to: email,
-            subject: 'Verify your PingPong account',
-            text: VERIFICATION_EMAIL_TEMPLATE(verificationToken)
-        };
+        // const mailOptions = {
+        //     from: '"PingPong App" <no-reply@pingpong.com>',
+        //     to: email,
+        //     subject: 'Verify your PingPong account',
+        //     text: VERIFICATION_EMAIL_TEMPLATE(verificationToken)
+        // };
 
-        await transporter.sendMail(mailOptions);
+        // await transporter.sendMail(mailOptions);
 
         reply.code(201) 
              .send({ status: true, 
