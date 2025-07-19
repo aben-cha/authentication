@@ -87,7 +87,13 @@ const logout = async (request, reply) => {
 };
 
 const verifyEmail = async (request, reply) => {
-
+    const {token} = req.body;
+    try {
+        console.log("code:    ---> : ", code);
+    } catch (error) {
+        console.error("verifyEmail error:", error);
+        reply.code(400).send({status:false, message: error.message});
+    }   
 }
 
 export default {login, signup, logout, verifyEmail};
