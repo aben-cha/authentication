@@ -1,7 +1,9 @@
 import userModel from "../models/user.model.js"
 import bcrypt from "bcryptjs";
 // import fastify from "../app.js";
+import transporter from "../utils/mailer.js";
 import {generateTokenAndSetCoookie} from "../utils/generateTokenAndSetCoookie.js";
+import { VERIFICATION_EMAIL_TEMPLATE } from "../utils/emailTemplates.js";
 
 const signup = async (request, reply) => {
     const {username, email, password} = request.body;
@@ -20,22 +22,19 @@ const signup = async (request, reply) => {
             throw new Error('Email already exists');
           
         const hashedPassword = await bcrypt.hash(password, 10);
+        const verificationCode = Math.floor(100000 + Math.random()* 900000).toString();
         const userId = userModel.createUser(username, email, hashedPassword);
         
-
-        // const token = fastify.jwt.sign({
-        //                 id: userId, 
-        //                 username: username, 
-        //                 email: email
-        //             }, {expiresIn: '7d'});
-        
-        // reply.setCookie('token', token, {
-        //     httpOnly: true, // can't be accessed by JavaScript
-        //     secure: process.env.NODE_ENV === 'production', //local: http , production: https
-        //     sameSite: 'strict', // CSRF protection
-        //     maxAge: 7 * 24 * 60 * 60 * 1000// 7 days
-        // });
         generateTokenAndSetCoookie(reply, userId, username, email);
+
+        const mailOptions = {
+            from: '"PingPong App" <no-reply@pingpong.com>',
+            to: email,
+            subject: 'Verify your PingPong account',
+            text: VERIFICATION_EMAIL_TEMPLATE(verificationToken)
+        };
+
+        await transporter.sendMail(mailOptions);
 
         reply.code(201) 
              .send({ status: true, 
@@ -86,4 +85,8 @@ const logout = async (request, reply) => {
     }    
 };
 
-export default {login, signup, logout};
+const verifyEmail = async (request, reply) => {
+
+}
+
+export default {login, signup, logout, verifyEmail};

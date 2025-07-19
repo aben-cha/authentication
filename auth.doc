@@ -81,19 +81,34 @@ fastify.register(fastifyCookie);
 ✅ 2. Install Nodemailer
     npm install nodemailer
 
+🎯 When to use Nodemailer in authentication :
+    a- Signup email verification
+        Send a verification link with a unique token
+    b- Password reset
+        Send a reset link with a secure token
+    c- (Optional) Login alerts or 2FA codes
+
+🔐 🔑 Best practices for Nodemailer in authentication
+A- Use an email provider suited for production:
+    ⚠️ Avoid personal Gmail in production (it has strict sending limits and spam risks).
+    Instead use:
+        * SendGrid (free tier generous, easy setup)
+        * Mailgun
+        * Amazon SES
+        * Brevo (Sendinblue)
+B. Use environment variables for credentials
+    ✔️ Never hard-code email user/password. Store them in .env:
+C. Use a utility file for mailer setup
+    ✔️ Example: utils/mailer.js
+D. Generate secure tokens
+    Use crypto.randomBytes to generate tokens for email verification or password reset.
+
+Store token hashed in DB if highly sensitive (for password reset).
+
 
 🔧 3. Setup Nodemailer transporter :  mailer.js
-import nodemailer from 'nodemailer';
 
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_USER, // your email
-    pass: process.env.EMAIL_PASS  // app password or real password if local
-  }
-});
 
-export default transporter;
 
 📝 4. Modify your users table
 ALTER TABLE USERS ADD COLUMN isVerified INTEGER DEFAULT 0;
