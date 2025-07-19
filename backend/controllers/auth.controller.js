@@ -29,10 +29,10 @@ const signup = async (request, reply) => {
         generateTokenAndSetCoookie(reply, userId, username, email);
 
         // const mailOptions = {
-        //     from: '"PingPong App" <no-reply@pingpong.com>',
+        //     from: '"PingPong App" <no-reply@pingpongapp.com>',
         //     to: email,
         //     subject: 'Verify your PingPong account',
-        //     text: VERIFICATION_EMAIL_TEMPLATE(verificationToken)
+        //     text: VERIFICATION_EMAIL_TEMPLATE(verificationCode)
         // };
 
         // await transporter.sendMail(mailOptions);
