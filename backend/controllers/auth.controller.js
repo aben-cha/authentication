@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import transporter from "../utils/mailer.js";
 import {generateTokenAndSetCoookie} from "../utils/generateTokenAndSetCoookie.js";
 import { VERIFICATION_EMAIL_TEMPLATE } from "../utils/emailTemplates.js";
+import { sendVerificationEmail } from "../utils/emailService.js";
 
 const signup = async (request, reply) => {
     const {username, email, password} = request.body;
@@ -28,6 +29,7 @@ const signup = async (request, reply) => {
         
         generateTokenAndSetCoookie(reply, userId, username, email);
 
+        
         // const mailOptions = {
         //     from: '"PingPong App" <no-reply@pingpongapp.com>',
         //     to: email,
@@ -36,6 +38,8 @@ const signup = async (request, reply) => {
         // };
 
         // await transporter.sendMail(mailOptions);
+
+        await sendVerificationEmail(email, verificationCode);
 
         reply.code(201) 
              .send({ status: true, 
@@ -87,9 +91,13 @@ const logout = async (request, reply) => {
 };
 
 const verifyEmail = async (request, reply) => {
-    const {token} = req.body;
+    const {token} = request.query;
     try {
-        console.log("code:    ---> : ", code);
+        if (!token) {
+            return reply.status(400).send({ message: 'Token is required' });
+        }
+
+        console.log("code:    -------------------> : ", token);
     } catch (error) {
         console.error("verifyEmail error:", error);
         reply.code(400).send({status:false, message: error.message});
