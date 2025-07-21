@@ -29,12 +29,20 @@ const signup = async (request, reply) => {
         
         generateTokenAndSetCoookie(reply, userId, username, email);
 
-        const verificationUrl = `http://localhost:5000/verify-email?token=${verificationCode}`;
+        
+        // const mailOptions = {
+        //     from: `PingPong App ${process.env.EMAIL}`,
+        //     to: email,
+        //     subject: 'Verify your PingPong account',
+        // };
+        
+        const verificationUrl = `http://localhost:${process.env.PORT}/verify-email?token=${verificationCode}`;
         
         const mailOptions = {
             from: `"PingPong App" <${process.env.EMAIL}>`,
             to: email,
             subject: 'Verify your PingPong account',
+            // html: VERIFICATION_EMAIL_TEMPLATE(verificationCode)
             html: `
                 <h3>Thank you for registering!</h3>
                 <h3>
