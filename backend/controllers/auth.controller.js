@@ -32,14 +32,16 @@ const signup = async (request, reply) => {
         const verificationUrl = `http://localhost:5000/verify-email?token=${verificationCode}`;
         
         const mailOptions = {
-            from: `PingPong App ${process.env.EMAIL}`,
+            from: `"PingPong App" <${process.env.EMAIL}>`,
             to: email,
             subject: 'Verify your PingPong account',
-            // text: VERIFICATION_EMAIL_TEMPLATE(verificationCode)
-            text: `
-                    <h3>Thank you for registering!</h3>
-                    <h3><a href="${verificationUrl}" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none;">Activate your account</a></h3>
-                  `
+            html: `
+                <h3>Thank you for registering!</h3>
+                <h3>
+                    <a href="${verificationUrl}" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none;">
+                        Activate your account
+                    </a>
+                </h3>`
         };
 
         await transporter.sendMail(mailOptions);
