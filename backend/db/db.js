@@ -6,7 +6,7 @@ import fs from 'fs';
 
 const db = new Database(`./backend/db/${process.env.DATABASE_NAME}`);
 
-const sql = fs.readFileSync('./backend/db//user.sql', 'utf8');
+const sql = fs.readFileSync('./backend/db/user.sql', 'utf8');
 
 db.exec(sql);
 
