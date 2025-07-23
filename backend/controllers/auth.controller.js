@@ -36,23 +36,25 @@ const signup = async (request, reply) => {
         //     subject: 'Verify your PingPong account',
         // };
         
+        //----------------------------------------
         // verification email
-        const verificationUrl = `http://localhost:${process.env.PORT}/verify-email?token=${verificationCode}`;
-        const mailOptions = {
-            from: `"PingPong App" <${process.env.EMAIL}>`,
-            to: email,
-            subject: 'Verify your PingPong account',
-            // html: VERIFICATION_EMAIL_TEMPLATE(verificationCode)
-            html: `
-                <h3>Thank you for registering!</h3>
-                <h3>
-                    <a href="${verificationUrl}" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none;">
-                        Activate your account
-                    </a>
-                </h3>`
-        };
+            // const verificationUrl = `http://localhost:${process.env.PORT}/verify-email?token=${verificationCode}`;
+            // const mailOptions = {
+            //     from: `"PingPong App" <${process.env.EMAIL}>`,
+            //     to: email,
+            //     subject: 'Verify your PingPong account',
+            //     // html: VERIFICATION_EMAIL_TEMPLATE(verificationCode)
+            //     html: `
+            //         <h3>Thank you for registering!</h3>
+            //         <h3>
+            //             <a href="${verificationUrl}" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none;">
+            //                 Activate your account
+            //             </a>
+            //         </h3>`
+            // };
 
-        await transporter.sendMail(mailOptions);
+            // await transporter.sendMail(mailOptions);
+        //----------------------------------------
         // await sendVerificationEmail(email, verificationCode);
 
         reply.code(201) 
@@ -134,7 +136,7 @@ const checkAuth = async (request, reply) => {
         if (!userExist)
             return reply.code(400).send({status:false, message: 'User not found'});
 
-        return reply.send({ success: true, user});
+        return reply.send({ success: true,message: 'You are authenticated', user: user});
 
     } catch (error) {
         console.log('checkAuth error :', error);

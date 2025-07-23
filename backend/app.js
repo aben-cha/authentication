@@ -12,7 +12,7 @@ const fastify = Fastify({
 });
 
 
-fastify.register(fastifyJwt, {secret: process.env.JWT_SECRET /* || secret_key */});
+fastify.register(fastifyJwt, {secret: process.env.JWT_SECRET  || secret_key });
 fastify.register(fastifyCookie);// cookie-parser
 
 // // Authentication decorator

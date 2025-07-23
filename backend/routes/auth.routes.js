@@ -1,5 +1,5 @@
 import authController from '../controllers/auth.controller.js';
-import { verifyToken } from '../middlewares/verifyAuth.js';
+import { verifyToken } from '../middlewares/verifyToken.js';
 
 async function routes(fastify, option) {
     fastify.post('/signup', authController.signup);
