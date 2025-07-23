@@ -7,6 +7,7 @@ async function routes(fastify, option) {
     // fastify.post('/verify-email', authController.verifyEmail);
     fastify.get('/verify-email', authController.verifyEmail);
     // fastify.get('/profile', {preHandler : fastify.authenticate}, profileController.profile);
+    fastify.get('/check-auth', verifyToken, checkAuth);
 }
 
 export default routes;

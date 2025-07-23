@@ -2,7 +2,7 @@ import userModel from "../models/user.model.js"
 import bcrypt from "bcryptjs";
 // import fastify from "../app.js";
 import transporter from "../utils/mailer.js";
-import {generateTokenAndSetCoookie} from "../utils/generateTokenAndSetCoookie.js";
+import {generateTokenAndSetCookie} from "../utils/generateTokenAndSetCookie.js";
 import { VERIFICATION_EMAIL_TEMPLATE } from "../utils/emailTemplates.js";
 import { sendVerificationEmail } from "../utils/emailService.js";
 
@@ -27,7 +27,7 @@ const signup = async (request, reply) => {
         const tokenExpiry = new Date(Date.now() + 15 * 60 * 1000).toISOString();
         const userId = userModel.createUser(username, email, hashedPassword, verificationCode, tokenExpiry);
         
-        generateTokenAndSetCoookie(reply, userId, username, email);
+        generateTokenAndSetCookie(reply, userId, username, email);
 
         
         // const mailOptions = {
@@ -36,8 +36,8 @@ const signup = async (request, reply) => {
         //     subject: 'Verify your PingPong account',
         // };
         
+        // verification email
         const verificationUrl = `http://localhost:${process.env.PORT}/verify-email?token=${verificationCode}`;
-        
         const mailOptions = {
             from: `"PingPong App" <${process.env.EMAIL}>`,
             to: email,
@@ -53,7 +53,6 @@ const signup = async (request, reply) => {
         };
 
         await transporter.sendMail(mailOptions);
-
         // await sendVerificationEmail(email, verificationCode);
 
         reply.code(201) 
@@ -85,7 +84,7 @@ const login = async (request, reply) => {
         if(!isPasswordValid)
             throw new Error("Incorrect password.");
         
-        generateTokenAndSetCoookie(reply, user.id, user.username, user.email);
+        generateTokenAndSetCookie(reply, user.id, user.username, user.email);
 
         reply.send({status: true, message: 'User Logged in successfully'});
 
@@ -97,8 +96,15 @@ const login = async (request, reply) => {
 
 const logout = async (request, reply) => {
     try {
-        reply.clearCookie('token', { path: '/' });
-        reply.send({status: true, message: 'Logged out successfully'})
+        // reply.clearCookie('token', { path: '/' });
+        reply.clearCookie('token', {
+            path: '/',
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict'
+        });
+        
+        reply.send({status: true, message: 'Logged out successfully'});
     } catch (error) {
         console.error("logout error:", error);
         reply.code(400).send({status:false, message: error.message});
