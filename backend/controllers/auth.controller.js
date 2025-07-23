@@ -125,4 +125,21 @@ const verifyEmail = async (request, reply) => {
     }   
 }
 
-export default {login, signup, logout, verifyEmail};
+const checkAuth = async (request, reply) => {
+    try {
+        // User data is available in request.user after JWT verification
+        const user = request.user;
+
+        const userExist = userModel.getUserByID(user.id);
+        if (!userExist)
+            return reply.code(400).send({status:false, message: 'User not found'});
+
+        return reply.send({ success: true, user});
+
+    } catch (error) {
+        console.log('checkAuth error :', error);
+        return reply.code(500).send({ status: false, message: 'Server error' });
+    }
+}
+
+export default {login, signup, logout, verifyEmail, checkAuth};
