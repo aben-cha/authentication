@@ -2,6 +2,7 @@ import Fastify from "fastify";
 import dotenv from "dotenv";
 import routes from "./routes/auth.routes.js";
 import fastifyJwt from "@fastify/jwt";
+import fastifyCors from "@fastify/cors";
 import fastifyCookie from "@fastify/cookie";
 import { authenticate } from "./middlewares/auth.js";
 
@@ -11,6 +12,10 @@ const fastify = Fastify({
     logger: true
 });
 
+await fastify.register(fastifyCors, {
+    origin: 'http://localhost:5173', // your frontend URL
+    credentials: true,               // allow cookies / auth headers
+});
 
 fastify.register(fastifyJwt, {secret: process.env.JWT_SECRET  || secret_key });
 fastify.register(fastifyCookie);// cookie-parser
