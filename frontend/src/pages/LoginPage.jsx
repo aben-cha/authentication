@@ -3,14 +3,22 @@ import {Lock, Mail, Loader} from 'lucide-react'
 import Input from "../components/Input"
 import { useState } from "react"
 import { Link } from 'react-router-dom'
+import { useAuthStore } from "../store/authStore"
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const isLoading = false;
 
-  const handleLogin = (e) => {
+  const {login, isLoading, error} = useAuthStore();
+
+  const handleLogin = async (e) => {
     e.preventDefault();
+
+    try {
+      await login(email, password);
+    } catch (error) {
+      
+    }
   }
 
   return (
@@ -47,6 +55,9 @@ const LoginPage = () => {
           </Link>
         </div>
 
+        {error && <p className="text-red-500 font-semibold mt-2">{error}</p>}
+
+
         
         <motion.button
 						className='mt-5 w-full py-3 px-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white 
@@ -66,7 +77,7 @@ const LoginPage = () => {
         <p className="text-sm text-gray-400">
           Don't have an account?{" "}
           <Link to={"/signup"} className="text-green-400 hover:underline">
-            Login
+            Sign Up
           </Link>
         </p>
       </div>
