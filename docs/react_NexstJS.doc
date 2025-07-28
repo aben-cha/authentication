@@ -38,5 +38,6 @@
 =====> chapter 5: Building UI with Components
     * React core concepts:
         - Components are JavaScript functions that return markup 
-        - Props
-        - State
+        - Props: data passed into a component (from parent). --->  No (read-only)
+            --> Since props is an object, you can use object destructuring
+        - State: data that the component manages itself.     --->  Yes (can be updated)
