@@ -3,12 +3,12 @@
 * npm i lucide-react: icons
 * npm i zustand
 
-======> chapitre 1: About React and Next
+======> chapter 1: About React and Next
     * Next.js is a flexible React framework that gives you building blocks 
       to create fast, full-stack web applications.
     * React is a JavaScript library for building interactive user interfaces.
 
-======> chapitre 2: Rendering User Interfaces (UI)
+======> chapter 2: Rendering User Interfaces (UI)
     * To understand how React works, we first need a basic understanding of how 
       browsers interpret your code to create (or render) user interfaces (UI).
     - When a user visits a web page, the server returns an HTML file to the 
@@ -17,8 +17,26 @@
             between your code and the user interface, and has a tree-like structure with 
             parent and child relationships.
     
-======> chapitre 3: 
+======> chapter 3: Updating UI with Javascript
+    * Imperative vs. declarative programming
+        1- imperative programming. You're writing the steps for how the user interface should be updated
+        2- declarative approach is often preferred because it can speed up the development proces
+    * React: A declarative UI library
+    * JSX: stands for JavaScript XML. It is a syntax extension for JavaScript that 
+           allows developers to write HTML elements directly within JavaScript code
 
+======> chapter 4: Getting Started with React
+    * Essential JavaScript for React:
+        - Functions and Arrow Functions
+        - Objects
+        - Arrays and array methods
+        - Destructuring
+        - Template literals
+        - Ternary Operators
+        - ES Modules and Import / Export Syntax
 
-
-
+=====> chapter 5: Building UI with Components
+    * React core concepts:
+        - Components are JavaScript functions that return markup 
+        - Props
+        - State
