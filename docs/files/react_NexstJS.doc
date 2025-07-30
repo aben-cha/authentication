@@ -43,3 +43,9 @@
         - State: data that the component manages itself.     --->  Yes (can be updated)
           State and hooks: You can think of state as any information in your UI 
                            that changes over time, usually triggered by user interaction.
+
+
+=====> NextJs
+  * By default every page every component is a server component  what deos mean ?
+        ----> the component run on the server not on the client, so we can interact 
+              with database directly
