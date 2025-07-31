@@ -49,3 +49,13 @@
   * By default every page every component is a server component  what deos mean ?
         ----> the component run on the server not on the client, so we can interact 
               with database directly
+
+
+=======> nextJs key:
+  * server-side rendering (dynamic and static)
+  * file based routing routes
+  * data fetching and mutation on the server
+      - fetching data directly in server Components
+      - mutations in server actions
+  * optimizations:
+      images, fonts, seo, preloading
