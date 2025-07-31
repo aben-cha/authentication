@@ -21,3 +21,14 @@ naments.
  In this major module, the goal is to implement a secure external authentication
  system using
  OAuth 2.0 .
+
+
+=======> create folder omponents:
+    1- navigation : * Logo (🏓) [h: 60, w: 60]
+                    * Sign in Link href='/signin'
+                    * Sign up Link href='/signup'
+    2- creating a layout:  The root layout is required and must contain html and body tags
+                <main>{children}</main> ??
+                * export const metadata = {
+                    title: 'Ping Pong ', // the title of the application
+                }
