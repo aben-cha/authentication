@@ -114,7 +114,7 @@ const logout = async (request, reply) => {
 };
 
 const verifyEmail = async (request, reply) => {
-    const {token} = request.query;
+    const { token } = request.query;
     try {
         if (!token) {
             return reply.status(400).send({ message: 'Token is required' });

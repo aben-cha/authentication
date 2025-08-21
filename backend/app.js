@@ -4,7 +4,7 @@ import routes from "./routes/auth.routes.js";
 import fastifyJwt from "@fastify/jwt";
 import fastifyCors from "@fastify/cors";
 import fastifyCookie from "@fastify/cookie";
-import { authenticate } from "./middlewares/auth.js";
+// import { authenticate } from "./middlewares/auth.js";
 
 dotenv.config();
 
