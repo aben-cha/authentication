@@ -1,22 +1,54 @@
 -- Corrected SQLite Database Schema for Ping Pong Tournament App
 
-CREATE TABLE User (
+-- CREATE TABLE User (
+--     id INTEGER PRIMARY KEY AUTOINCREMENT,
+--     username VARCHAR(50) NOT NULL UNIQUE,
+--     email VARCHAR(100) NOT NULL UNIQUE,
+--     password VARCHAR(255) NOT NULL,
+--     -- avatar_url VARCHAR(255) NOT NULL DEFAULT '/uploads/default.png',
+--     avatar_url VARCHAR(255) NOT NULL, -- generatePingPongAvatar
+
+--     points INTEGER NOT NULL DEFAULT 0,
+--     location VARCHAR(100),
+--     wins INTEGER NOT NULL DEFAULT 0,
+--     losses INTEGER NOT NULL DEFAULT 0,
+--     rank INTEGER NOT NULL DEFAULT 0,
+--     online_status BOOLEAN NOT NULL DEFAULT FALSE,
+--     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+-- );
+
+CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username VARCHAR(50) NOT NULL UNIQUE,
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    -- avatar_url VARCHAR(255) NOT NULL DEFAULT '/uploads/default.png',
-    avatar_url VARCHAR(255) NOT NULL, -- generatePingPongAvatar
+    avatar_url VARCHAR(255) NOT NULL, -- Generated via generatePingPongAvatar
+    
+    -- Account verification
+    -- isAccountVerified INTEGER DEFAULT 0,
+    -- verificationToken TEXT,
+    -- verificationTokenExpiresAt DATETIME,
 
+    isAccountVerified INTEGER DEFAULT 0,
+    verificationToken TEXT,
+    verificationTokenExpiresAt DATETIME,
+    resetPasswordToken TEXT,
+    resetPasswordExpiresAt DATETIME,
+    
+    -- Game stats
     points INTEGER NOT NULL DEFAULT 0,
-    location VARCHAR(100),
     wins INTEGER NOT NULL DEFAULT 0,
     losses INTEGER NOT NULL DEFAULT 0,
     rank INTEGER NOT NULL DEFAULT 0,
+    
+    -- Profile info
+    location VARCHAR(100),
     online_status BOOLEAN NOT NULL DEFAULT FALSE,
-    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+    
+    -- Timestamps
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP
 );
-
 
 CREATE TABLE Friend(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
