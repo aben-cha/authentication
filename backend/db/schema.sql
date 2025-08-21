@@ -6,7 +6,7 @@ CREATE TABLE User (
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     -- avatar_url VARCHAR(255) NOT NULL DEFAULT '/uploads/default.png',
-    avatar_url VARCHAR(255),
+    avatar_url VARCHAR(255) NOT NULL, -- generatePingPongAvatar
 
     points INTEGER NOT NULL DEFAULT 0,
     location VARCHAR(100),
