@@ -1,5 +1,5 @@
 import db from '../db/db.js'
-import { generatePingPongAvatar } from '../utils/utils.js'
+import { generatePingPongAvatar } from '../utils/generatePingPongAvatar.js'
 
 const getAllUsers =  () => {
     const query = 'SELECT * FROM USERS';

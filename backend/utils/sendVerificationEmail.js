@@ -25,7 +25,7 @@ export const sendVerificationEmail = async (email, verificationToken, username) 
                     This is an automated email from Ping Pong App. Please do not reply.
                 </p>
             </div>
-            `
+        `
     };
 
     return transporter.sendMail(mailOptions);
