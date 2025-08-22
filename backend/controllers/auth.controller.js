@@ -3,8 +3,7 @@ import bcrypt from "bcryptjs";
 // import fastify from "../app.js";
 import transporter from "../utils/mailer.js";
 import {generateTokenAndSetCookie} from "../utils/generateTokenAndSetCookie.js";
-import { VERIFICATION_EMAIL_TEMPLATE } from "../utils/emailTemplates.js";
-import { sendVerificationEmail } from "../utils/emailService.js";
+import { sendVerificationEmail } from "../utils/sendVerificationEmail.js"
 
 const signup = async (request, reply) => {
     const {username, email, password} = request.body;
@@ -40,32 +39,9 @@ const signup = async (request, reply) => {
         generateTokenAndSetCookie(reply, userId, username, email);
 
         
-        // const mailOptions = {
-        //     from: `PingPong App ${process.env.EMAIL}`,
-        //     to: email,
-        //     subject: 'Verify your PingPong account',
-        // };
-        
         //----------------------------------------
-        // verification email
-            // const verificationUrl = `http://localhost:${process.env.PORT}/verify-email?token=${verificationCode}`;
-            // const mailOptions = {
-            //     from: `"PingPong App" <${process.env.EMAIL}>`,
-            //     to: email,
-            //     subject: 'Verify your PingPong account',
-            //     // html: VERIFICATION_EMAIL_TEMPLATE(verificationCode)
-            //     html: `
-            //         <h3>Thank you for registering!</h3>
-            //         <h3>
-            //             <a href="${verificationUrl}" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none;">
-            //                 Activate your account
-            //             </a>
-            //         </h3>`
-            // };
-
-            // await transporter.sendMail(mailOptions);
-        //----------------------------------------
-        // await sendVerificationEmail(email, verificationCode);
+        await sendVerificationEmail(email, verificationToken, username);
+        // ----------------------------------------
 
         reply.code(201) 
              .send({ status: true, 

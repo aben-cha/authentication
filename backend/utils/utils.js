@@ -1,5 +1,4 @@
 
-
 export const generatePingPongAvatar = (username) => {
     const initials = username.substring(0, 2).toUpperCase();
     const pingPongColors = ['ff6b35', '004d7a', '008744', 'ffa700']; // Orange, blue, green, yellow
