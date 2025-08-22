@@ -1,4 +1,5 @@
 import db from '../db/db.js'
+import { generatePingPongAvatar } from '../utils/utils.js'
 
 const getAllUsers =  () => {
     const query = 'SELECT * FROM USERS';
@@ -30,13 +31,42 @@ const getUserByUsername =  (username) => {
 //     return user.lastInsertRowid;
 // }
 
-const createUser =  (username, email, password, verificationToken, tokenExpiry) => {
+// const createUser =  (username, email, password, verificationToken, tokenExpiry) => {
+//     const query = `
+//       INSERT INTO USERS 
+//       (username, email, password, verificationToken, verificationTokenExpiresAt) 
+//       VALUES (?, ?, ?, ?, ?)
+//     `;
+//     const user = db.prepare(query).run(username, email, password, verificationToken, tokenExpiry);
+//     return user.lastInsertRowid;
+// }
+
+const createUser = (userData) => {
+    const {
+        username,
+        email,
+        password,
+        verificationToken,
+        tokenExpiry,
+    } = userData;
+
     const query = `
-      INSERT INTO USERS 
-      (username, email, password, verificationToken, verificationTokenExpiresAt) 
-      VALUES (?, ?, ?, ?, ?)
+        INSERT INTO USERS 
+        (username, email, password, avatar_url, verificationToken, verificationTokenExpiresAt)
+        VALUES (?, ?, ?, ?, ?, ?);
     `;
-    const user = db.prepare(query).run(username, email, password, verificationToken, tokenExpiry);
+
+    const avatar_url = generatePingPongAvatar(username);
+
+    const user = db.prepare(query).run(
+        username,
+        email,
+        password,
+        avatar_url,
+        verificationToken,
+        tokenExpiry
+    );
+
     return user.lastInsertRowid;
 }
 

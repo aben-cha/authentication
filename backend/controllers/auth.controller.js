@@ -23,9 +23,19 @@ const signup = async (request, reply) => {
             throw new Error('Email already exists');
           
         const hashedPassword = await bcrypt.hash(password, 10);
-        const verificationCode = Math.floor(100000 + Math.random()* 900000).toString();
-        const tokenExpiry = new Date(Date.now() + 15 * 60 * 1000).toISOString();
-        const userId = userModel.createUser(username, email, hashedPassword, verificationCode, tokenExpiry);
+        const verificationToken = Math.floor(100000 + Math.random() * 900000).toString();
+        const tokenExpiry = new Date(Date.now() + 15 * 60 * 1000).toISOString(); // 15 minutes
+
+        // const userId = userModel.createUser(username, email, hashedPassword, verificationToken, tokenExpiry);
+
+        const userId = userModel.createUser({
+            username,
+            email,
+            password: hashedPassword,
+            verificationToken,
+            tokenExpiry,
+            // location
+        })
         
         generateTokenAndSetCookie(reply, userId, username, email);
 
@@ -125,6 +135,25 @@ const verifyEmail = async (request, reply) => {
         console.error("verifyEmail error:", error);
         reply.code(400).send({status:false, message: error.message});
     }   
+
+    // app.post('/verify-email', (req, res) => {
+    //     const { email, code } = req.body;
+        
+    //     const query = `
+    //       UPDATE users 
+    //       SET isAccountVerified = 1, verificationToken = NULL, verificationTokenExpiresAt = NULL
+    //       WHERE email = ? AND verificationToken = ? AND verificationTokenExpiresAt > ?
+    //     `;
+        
+    //     const now = new Date().toISOString();
+    //     const result = db.prepare(query).run(email, code, now);
+        
+    //     if (result.changes > 0) {
+    //       res.json({ message: 'Email verified successfully!' });
+    //     } else {
+    //       res.status(400).json({ error: 'Invalid or expired verification code' });
+    //     }
+    //   });
 }
 
 const checkAuth = async (request, reply) => {
