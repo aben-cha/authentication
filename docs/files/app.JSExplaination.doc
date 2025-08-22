@@ -1,0 +1,3 @@
+* fastifyJwt → JWT (JSON Web Token) plugin for authentication.
+* fastifyCors → Handles CORS (so your frontend app can talk to this backend).
+* fastifyCookie → Lets you read/set cookies in requests/responses
